@@ -4,6 +4,8 @@
 
 package com.ghalexandru.stackoverflow.ui
 
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class Placeholder {
-}
+@HiltAndroidApp
+class BaseApplication : Application()
