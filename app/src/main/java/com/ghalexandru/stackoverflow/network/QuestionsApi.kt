@@ -11,6 +11,6 @@ import retrofit2.http.Query
 
 interface QuestionsApi {
 
-    @GET("questions?order=desc&sort=activity&site=stackoverflow")
+    @GET("questions?order=desc&sort=creation&site=stackoverflow")
     suspend fun getQuestions(@Query(PAGE) page: Int): Questions
 }

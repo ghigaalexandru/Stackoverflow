@@ -9,13 +9,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
 import com.ghalexandru.stackoverflow.databinding.ItemQuestionBinding
 import com.ghalexandru.stackoverflow.models.Question
+import com.ghalexandru.stackoverflow.util.elapsedTime
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class Adapter @Inject constructor(): ListAdapter<Question, Adapter.ViewHolder>(DIFF_CALLBACK) {
+class Adapter @Inject constructor(private val requestManager: RequestManager) :
+    ListAdapter<Question, Adapter.ViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemQuestionBinding.inflate(
@@ -34,6 +37,8 @@ class Adapter @Inject constructor(): ListAdapter<Question, Adapter.ViewHolder>(D
         RecyclerView.ViewHolder(binding.root) {
         fun bind(question: Question) {
             binding.tvQuestionTitle.text = question.title
+            requestManager.load(question.onwer.image).into(binding.ivPoster)
+            binding.tvTimeElapsed.text = question.creationDate.elapsedTime()
         }
     }
 }
