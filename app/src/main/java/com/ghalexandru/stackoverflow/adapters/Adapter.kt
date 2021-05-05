@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.ghalexandru.stackoverflow.databinding.ItemQuestionBinding
 import com.ghalexandru.stackoverflow.models.Question
-import com.ghalexandru.stackoverflow.util.elapsedTime
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
@@ -37,18 +36,20 @@ class Adapter @Inject constructor(private val requestManager: RequestManager) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(question: Question) {
             binding.tvQuestionTitle.text = question.title
-            requestManager.load(question.onwer.image).into(binding.ivPoster)
-            binding.tvTimeElapsed.text = question.creationDate.elapsedTime()
+            requestManager.load(question.onwer.image).into(binding.ivOwnerAvatar)
+            binding.tvOwnerName.text = question.onwer.name
         }
     }
-}
 
-private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Question>() {
-    override fun areItemsTheSame(oldItem: Question, newItem: Question): Boolean {
-        return oldItem.id == newItem.id
-    }
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Question>() {
+            override fun areItemsTheSame(oldItem: Question, newItem: Question): Boolean {
+                return oldItem.id == newItem.id
+            }
 
-    override fun areContentsTheSame(oldItem: Question, newItem: Question): Boolean {
-        return oldItem.hashCode() == newItem.hashCode()
+            override fun areContentsTheSame(oldItem: Question, newItem: Question): Boolean {
+                return oldItem.hashCode() == newItem.hashCode()
+            }
+        }
     }
 }

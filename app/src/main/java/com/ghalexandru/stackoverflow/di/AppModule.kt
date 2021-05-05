@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.ghalexandru.stackoverflow.R
-import com.ghalexandru.stackoverflow.network.QuestionsApi
+import com.ghalexandru.stackoverflow.network.StackOverflowApi
 import com.ghalexandru.stackoverflow.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -35,8 +35,8 @@ class AppModule {
 
         @Singleton
         @Provides
-        fun provideQuestionsApi(retrofit: Retrofit): QuestionsApi {
-            return retrofit.create(QuestionsApi::class.java)
+        fun provideQuestionsApi(retrofit: Retrofit): StackOverflowApi {
+            return retrofit.create(StackOverflowApi::class.java)
         }
 
         @Singleton

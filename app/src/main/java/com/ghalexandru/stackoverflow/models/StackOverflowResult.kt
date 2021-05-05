@@ -6,4 +6,7 @@ package com.ghalexandru.stackoverflow.models
 
 import com.google.gson.annotations.SerializedName
 
-data class Questions(@SerializedName("items") val questions: List<Question>)
+data class StackOverflowResult<out T>(
+    @SerializedName("items") val items: List<T>,
+    @SerializedName("has_more") val hasMore: Boolean,
+)

@@ -20,9 +20,10 @@ class ViewModel @Inject constructor(private val repository: Repository) : ViewMo
     fun getQuestions(): LiveData<Resource<List<Question>>> = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = repository.getQuestions(1).questions))
+            val result = repository.getQuestions(1)
+            emit(Resource.success(data = result.items))
         } catch (e: Exception) {
-            emit(Resource.error(data = null, message = e.message ?: "Error Occurred!"))
+            emit(Resource.error(data = null, message = e.message ?: "Server communication error!"))
         }
     }
 }
