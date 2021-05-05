@@ -36,8 +36,10 @@ class Adapter @Inject constructor(private val requestManager: RequestManager) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(question: Question) {
             binding.tvQuestionTitle.text = question.title
-            requestManager.load(question.onwer.image).into(binding.ivOwnerAvatar)
-            binding.tvOwnerName.text = question.onwer.name
+            question.onwer?.let {
+                requestManager.load(it.image).into(binding.ivOwnerAvatar)
+                binding.tvOwnerName.text = it.name
+            }
         }
     }
 
