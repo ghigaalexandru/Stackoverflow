@@ -5,7 +5,6 @@
 package com.ghalexandru.stackoverflow.ui
 
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,41 +29,47 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var layoutManager: LinearLayoutManager
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        rv_main.adapter = adapter
-        rv_main.layoutManager = layoutManager
-        rv_main.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    viewModel.fetchNextQuestions()
-                }
-            }
-        })
-
+        setupRecyclerView()
         viewModel.fetchFirstQuestions()
-
         viewModel.questions.observe(this, {
             it?.let {
                 when (it.status) {
                     Status.SUCCESS -> {
                         it.data?.items?.let { list -> adapter.addList(list) }
-                        displayProgressBar(false)
+                        displayProgressLoading(false)
                     }
                     Status.ERROR -> {
                         it.message?.let { message ->
                             displayError(message)
                         }
-                        displayProgressBar(false)
+                        displayProgressLoading(false)
                     }
-                    Status.LOADING -> displayProgressBar(true)
+                    Status.LOADING -> displayProgressLoading(true)
+                }
+            }
+        })
+        binding.root.setOnRefreshListener {
+            adapter.cleanList()
+            viewModel.fetchFirstQuestions()
+        }
+    }
+
+    private fun setupRecyclerView() {
+        recyclerview.adapter = adapter
+        recyclerview.layoutManager = layoutManager
+        recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    viewModel.fetchNextQuestions()
                 }
             }
         })
@@ -74,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         Snackbar.make(binding.root, error, Snackbar.LENGTH_LONG).show()
     }
 
-    private fun displayProgressBar(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
+    private fun displayProgressLoading(isLoading: Boolean) {
+        binding.root.isRefreshing = isLoading
     }
 }

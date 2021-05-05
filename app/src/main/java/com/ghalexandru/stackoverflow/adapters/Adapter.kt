@@ -50,6 +50,10 @@ class Adapter @Inject constructor(private val requestManager: RequestManager) :
         submitList(list.distinct())
     }
 
+    fun cleanList() {
+        submitList(listOf())
+    }
+
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Question>() {
             override fun areItemsTheSame(oldItem: Question, newItem: Question): Boolean {

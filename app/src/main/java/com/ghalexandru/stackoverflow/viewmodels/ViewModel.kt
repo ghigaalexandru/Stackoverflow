@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    var page = 0
+    private var page = 0
     val questions = MutableLiveData<Resource<StackOverflowResponse<Question>>>()
 
     fun fetchFirstQuestions() {
