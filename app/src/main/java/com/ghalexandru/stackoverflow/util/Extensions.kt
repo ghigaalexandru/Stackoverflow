@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 fun Any.logd(message: String) {
-    if (BuildConfig.DEBUG) Log.d(this::class.java.simpleName, message)
+    Log.d(this::class.java.simpleName, message)
 }
 
 fun Any.loge(message: String, throwable: Throwable? = null) {

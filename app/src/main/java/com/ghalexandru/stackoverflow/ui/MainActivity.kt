@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ghalexandru.stackoverflow.adapters.Adapter
 import com.ghalexandru.stackoverflow.databinding.ActivityMainBinding
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: Adapter
 
     @Inject
-    lateinit var layoutManager: RecyclerView.LayoutManager
+    lateinit var layoutManager: LinearLayoutManager
 
     lateinit var binding: ActivityMainBinding
 
@@ -38,12 +39,23 @@ class MainActivity : AppCompatActivity() {
 
         rv_main.adapter = adapter
         rv_main.layoutManager = layoutManager
+        rv_main.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
 
-        viewModel.getQuestions().observe(this, {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    viewModel.fetchNextQuestions()
+                }
+            }
+        })
+
+        viewModel.fetchFirstQuestions()
+
+        viewModel.questions.observe(this, {
             it?.let {
                 when (it.status) {
                     Status.SUCCESS -> {
-                        adapter.submitList(it.data)
+                        it.data?.items?.let { list -> adapter.addList(list) }
                         displayProgressBar(false)
                     }
                     Status.ERROR -> {
