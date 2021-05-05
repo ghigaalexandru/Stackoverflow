@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Question(
     @SerializedName("owner")
-    val onwer: Owner? = null,
+    val owner: Owner? = null,
     @SerializedName("title")
     val title: String,
     @SerializedName("question_id")
