@@ -20,7 +20,7 @@ class MainModule {
     companion object {
         @Provides
         @ActivityScoped
-        fun provideLayoutManager(@ApplicationContext context: Context): LinearLayoutManager {
+        fun provideLayoutManager(@ApplicationContext context: Context): RecyclerView.LayoutManager {
             return LinearLayoutManager(context)
         }
     }

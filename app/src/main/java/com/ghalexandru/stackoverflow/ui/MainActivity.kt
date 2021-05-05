@@ -7,7 +7,6 @@ package com.ghalexandru.stackoverflow.ui
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ghalexandru.stackoverflow.adapters.Adapter
 import com.ghalexandru.stackoverflow.databinding.ActivityMainBinding
@@ -27,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: Adapter
 
     @Inject
-    lateinit var layoutManager: LinearLayoutManager
+    lateinit var layoutManager: RecyclerView.LayoutManager
 
     private lateinit var binding: ActivityMainBinding
 
