@@ -28,15 +28,22 @@ class Adapter @Inject constructor(private val requestManager: RequestManager) :
         )
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
+
+    fun addList(newList: List<Question>) {
+        val list = mutableListOf<Question>()
+        list.addAll(currentList)
+        list.addAll(newList)
+        submitList(list.distinct())
     }
+
+    fun cleanList() = submitList(listOf())
 
     inner class ViewHolder(private val binding: ItemQuestionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(question: Question) {
             binding.tvQuestionTitle.text = question.title
-            question.onwer?.let {
+            question.owner?.let {
                 requestManager.load(it.image).into(binding.ivOwnerAvatar)
                 binding.tvOwnerName.text = it.name
             }
