@@ -98,4 +98,7 @@ dependencies {
 
     //  Swiperefreshlayout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
+    //  Paging
+    implementation 'androidx.paging:paging-runtime:3.0.0'
 }

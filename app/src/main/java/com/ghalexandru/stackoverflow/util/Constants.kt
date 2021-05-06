@@ -8,4 +8,5 @@ object Constants {
     const val BASE_URL: String = "https://api.stackexchange.com/2.2/"
     const val PAGE: String = "page"
     const val DELAY_API_CALL = 200L
+    const val FIRST_PAGE = 1
 }

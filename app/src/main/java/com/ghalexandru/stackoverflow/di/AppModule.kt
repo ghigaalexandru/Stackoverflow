@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.ghalexandru.stackoverflow.R
-import com.ghalexandru.stackoverflow.network.StackOverflowApi
+import com.ghalexandru.stackoverflow.api.StackOverflowApi
 import com.ghalexandru.stackoverflow.util.Constants
 import dagger.Module
 import dagger.Provides

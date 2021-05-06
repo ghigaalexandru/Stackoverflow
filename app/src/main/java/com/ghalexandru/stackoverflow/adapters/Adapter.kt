@@ -6,18 +6,19 @@ package com.ghalexandru.stackoverflow.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.ghalexandru.stackoverflow.databinding.ItemQuestionBinding
-import com.ghalexandru.stackoverflow.models.Question
+import com.ghalexandru.stackoverflow.data.Question
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
 class Adapter @Inject constructor(private val requestManager: RequestManager) :
-    ListAdapter<Question, Adapter.ViewHolder>(DIFF_CALLBACK) {
+    PagingDataAdapter<Question, Adapter.ViewHolder>(DIFF_CALLBACK) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             ItemQuestionBinding.inflate(
@@ -28,16 +29,9 @@ class Adapter @Inject constructor(private val requestManager: RequestManager) :
         )
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(getItem(position))
-
-    fun addList(newList: List<Question>) {
-        val list = mutableListOf<Question>()
-        list.addAll(currentList)
-        list.addAll(newList)
-        submitList(list.distinct())
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        getItem(position)?.let { holder.bind(it) }
     }
-
-    fun cleanList() = submitList(listOf())
 
     inner class ViewHolder(private val binding: ItemQuestionBinding) :
         RecyclerView.ViewHolder(binding.root) {

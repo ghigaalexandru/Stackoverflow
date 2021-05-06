@@ -8,12 +8,8 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.ghalexandru.stackoverflow.R
 import com.ghalexandru.stackoverflow.adapters.Adapter
 import com.ghalexandru.stackoverflow.databinding.ActivityMainBinding
-import com.ghalexandru.stackoverflow.network.Status
-import com.ghalexandru.stackoverflow.viewmodels.ViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -37,50 +33,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupRecyclerView()
-        viewModel.fetchFirstQuestions()
-        viewModel.questions.observe(this, {
-            it?.let {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        it.data?.items?.let { list -> adapter.addList(list) }
-                        displayProgressLoading(false)
-                    }
-                    Status.ERROR -> displayError(it.message)
-                    Status.LOADING -> displayProgressLoading(true)
-                }
-            }
-        })
-        binding.root.setOnRefreshListener {
-            adapter.cleanList()
-            viewModel.fetchFirstQuestions()
-        }
+
+        viewModel.fetchQuestions().observe(this, { adapter.submitData(lifecycle, it) })
     }
 
     private fun setupRecyclerView() {
+        recyclerview.setHasFixedSize(true)
         recyclerview.adapter = adapter
         recyclerview.layoutManager = layoutManager
-        recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    viewModel.fetchNextQuestions()
-                }
-            }
-        })
-    }
-
-    private fun displayError(error: String?) {
-        Snackbar.make(
-            binding.root,
-            error ?: getString(R.string.server_comunication_error),
-            Snackbar.LENGTH_LONG
-        )
-            .show()
-        displayProgressLoading(false)
-    }
-
-    private fun displayProgressLoading(isLoading: Boolean) {
-        binding.root.isRefreshing = isLoading
     }
 }

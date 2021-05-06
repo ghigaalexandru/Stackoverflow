@@ -2,10 +2,9 @@
  * Copyright (c) 2021. Parrot Faurecia Automotive S.A.S. All rights reserved.
  */
 
-package com.ghalexandru.stackoverflow.network
+package com.ghalexandru.stackoverflow.api
 
-import com.ghalexandru.stackoverflow.models.Question
-import com.ghalexandru.stackoverflow.models.StackOverflowResponse
+import com.ghalexandru.stackoverflow.data.Question
 import com.ghalexandru.stackoverflow.util.Constants.PAGE
 import retrofit2.http.GET
 import retrofit2.http.Query
