@@ -5,12 +5,14 @@
 package com.ghalexandru.stackoverflow.api
 
 import com.ghalexandru.stackoverflow.data.Question
-import com.ghalexandru.stackoverflow.util.Constants.PAGE
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface StackOverflowApi {
 
     @GET("questions?order=desc&sort=creation&site=stackoverflow")
-    suspend fun getQuestions(@Query(PAGE) page: Int): StackOverflowResponse<Question>
+    suspend fun getQuestions(
+        @Query("page") page: Int,
+        @Query("pagesize") pageSize: Int,
+    ): Response<Question>
 }

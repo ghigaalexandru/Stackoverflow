@@ -6,7 +6,7 @@ package com.ghalexandru.stackoverflow.api
 
 import com.google.gson.annotations.SerializedName
 
-data class StackOverflowResponse<out T>(
+data class Response<out T>(
     @SerializedName("items") val items: List<T>,
     @SerializedName("has_more") val hasMore: Boolean,
     @SerializedName("error_message") val errorMessage: String? = null,

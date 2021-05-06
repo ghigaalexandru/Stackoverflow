@@ -10,9 +10,11 @@ import androidx.paging.liveData
 import com.ghalexandru.stackoverflow.api.StackOverflowApi
 import javax.inject.Inject
 
-class Repository @Inject constructor(private val stackOverflowApi: StackOverflowApi) {
+class Repository @Inject constructor(
+    private val questionPagingSource: QuestionPagingSource,
+    private val pagingConfig: PagingConfig,
+) {
 
     fun fetchQuestionsLiveData() =
-        Pager(config = PagingConfig(pageSize = 30, maxSize = 90, enablePlaceholders = false),
-            pagingSourceFactory = { QuestionPagingSource(stackOverflowApi) }).liveData
+        Pager(pagingConfig, pagingSourceFactory = { questionPagingSource }).liveData
 }

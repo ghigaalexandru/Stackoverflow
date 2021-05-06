@@ -3,4 +3,6 @@
     <string name="sample_question_title">I am working on a website and it has an infinite scroll. I tried working my way around it but didn\'t get it right [closed]</string>
     <string name="sample_owner_name">Nancy Xiong</string>
     <string name="server_comunication_error">Server communication error!</string>
+    <string name="button_retry">Retry</string>
+    <string name="label_error">Something went wrong, please try again</string>
 </resources>

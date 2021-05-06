@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.ghalexandru.stackoverflow.adapters.Adapter
+import com.ghalexandru.stackoverflow.adapters.LoaderStateAdapter
 import com.ghalexandru.stackoverflow.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,8 +39,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
+        val loaderStateAdapter = LoaderStateAdapter { adapter.retry() }
+        recyclerview.adapter = adapter.withLoadStateFooter(loaderStateAdapter)
         recyclerview.setHasFixedSize(true)
-        recyclerview.adapter = adapter
         recyclerview.layoutManager = layoutManager
     }
 }

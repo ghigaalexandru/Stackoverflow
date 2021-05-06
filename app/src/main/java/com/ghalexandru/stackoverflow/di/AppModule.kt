@@ -5,6 +5,7 @@
 package com.ghalexandru.stackoverflow.di
 
 import android.content.Context
+import androidx.paging.PagingConfig
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
@@ -41,6 +42,12 @@ class AppModule {
 
         @Singleton
         @Provides
+        fun providePagingConfig(): PagingConfig {
+            return PagingConfig(pageSize = 30, maxSize = 90, enablePlaceholders = false)
+        }
+
+        @Singleton
+        @Provides
         fun provideRequestOptions(): RequestOptions {
             return RequestOptions
                 .placeholderOf(R.drawable.image_placeholder)
@@ -51,7 +58,7 @@ class AppModule {
         @Provides
         fun provideGlideInstance(
             @ApplicationContext context: Context,
-            requestOptions: RequestOptions
+            requestOptions: RequestOptions,
         ): RequestManager {
             return Glide.with(context)
                 .setDefaultRequestOptions(requestOptions)
