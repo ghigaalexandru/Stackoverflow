@@ -8,6 +8,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.ghalexandru.stackoverflow.R
 import com.ghalexandru.stackoverflow.adapters.Adapter
 import com.ghalexandru.stackoverflow.databinding.ActivityMainBinding
 import com.ghalexandru.stackoverflow.network.Status
@@ -44,12 +45,7 @@ class MainActivity : AppCompatActivity() {
                         it.data?.items?.let { list -> adapter.addList(list) }
                         displayProgressLoading(false)
                     }
-                    Status.ERROR -> {
-                        it.message?.let { message ->
-                            displayError(message)
-                        }
-                        displayProgressLoading(false)
-                    }
+                    Status.ERROR -> displayError(it.message)
                     Status.LOADING -> displayProgressLoading(true)
                 }
             }
@@ -74,8 +70,14 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun displayError(error: String) {
-        Snackbar.make(binding.root, error, Snackbar.LENGTH_LONG).show()
+    private fun displayError(error: String?) {
+        Snackbar.make(
+            binding.root,
+            error ?: getString(R.string.server_comunication_error),
+            Snackbar.LENGTH_LONG
+        )
+            .show()
+        displayProgressLoading(false)
     }
 
     private fun displayProgressLoading(isLoading: Boolean) {
