@@ -5,14 +5,17 @@
 package com.ghalexandru.stackoverflow.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
 import com.ghalexandru.stackoverflow.adapters.Adapter
 import com.ghalexandru.stackoverflow.adapters.LoaderStateAdapter
 import com.ghalexandru.stackoverflow.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -43,5 +46,25 @@ class MainActivity : AppCompatActivity() {
         recyclerview.adapter = adapter.withLoadStateFooter(loaderStateAdapter)
         recyclerview.setHasFixedSize(true)
         recyclerview.layoutManager = layoutManager
+        adapter.addLoadStateListener {
+            val error = when {
+                it.prepend is LoadState.Error -> it.prepend as LoadState.Error
+                it.append is LoadState.Error -> it.append as LoadState.Error
+                it.refresh is LoadState.Error -> it.refresh as LoadState.Error
+                else -> null
+            }
+            error?.let { e ->
+                displayError(e.error)
+            }
+        }
+    }
+
+    private fun displayError(throwable: Throwable) {
+        if (throwable is HttpException)
+            Toast.makeText(this,
+                "Http exception with code ${throwable.code()}",
+                Toast.LENGTH_LONG).show()
+        else
+            Toast.makeText(this, throwable.message, Toast.LENGTH_LONG).show()
     }
 }
