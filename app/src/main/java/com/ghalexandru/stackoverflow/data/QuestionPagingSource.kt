@@ -7,14 +7,16 @@ package com.ghalexandru.stackoverflow.data
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.ghalexandru.stackoverflow.api.StackOverflowApi
+import com.ghalexandru.stackoverflow.util.Constants.API_DELAY
 import com.ghalexandru.stackoverflow.util.Constants.FIRST_PAGE
 import com.ghalexandru.stackoverflow.util.logd
+import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import java.io.IOException
-import javax.inject.Inject
 
-class QuestionPagingSource @Inject constructor(private val stackOverflowApi: StackOverflowApi) :
+class QuestionPagingSource(private val stackOverflowApi: StackOverflowApi) :
     PagingSource<Int, Question>() {
+
     override fun getRefreshKey(state: PagingState<Int, Question>): Int? {
         return state.anchorPosition
     }
@@ -24,7 +26,9 @@ class QuestionPagingSource @Inject constructor(private val stackOverflowApi: Sta
 
         return try {
             logd("Page is $page")
+            delay(API_DELAY)
             val response = stackOverflowApi.getQuestions(page, params.loadSize)
+            response.backoff?.let { delay(it * 1000L) }
             val questions = response.items
 
             LoadResult.Page(

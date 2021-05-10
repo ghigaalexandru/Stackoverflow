@@ -43,7 +43,7 @@ class AppModule {
         @Singleton
         @Provides
         fun providePagingConfig(): PagingConfig {
-            return PagingConfig(pageSize = 30, maxSize = 90, enablePlaceholders = false)
+            return PagingConfig(pageSize = 30, enablePlaceholders = true)
         }
 
         @Singleton

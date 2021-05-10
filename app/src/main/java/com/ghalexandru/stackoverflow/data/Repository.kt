@@ -6,15 +6,16 @@ package com.ghalexandru.stackoverflow.data
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.liveData
+import androidx.paging.PagingData
 import com.ghalexandru.stackoverflow.api.StackOverflowApi
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class Repository @Inject constructor(
-    private val questionPagingSource: QuestionPagingSource,
+    private val stackOverflowApi: StackOverflowApi,
     private val pagingConfig: PagingConfig,
 ) {
 
-    fun fetchQuestionsLiveData() =
-        Pager(pagingConfig, pagingSourceFactory = { questionPagingSource }).liveData
+    fun fetchQuestionsLiveData(): Flow<PagingData<Question>> =
+        Pager(pagingConfig, pagingSourceFactory = { QuestionPagingSource(stackOverflowApi) }).flow
 }
